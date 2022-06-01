@@ -2,12 +2,6 @@
 using PruebaSQL.Modelo;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PruebaSQL
@@ -22,9 +16,11 @@ namespace PruebaSQL
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //carga los datos al iniciar el formulario
             ActualizarLista();
         }
-
+        //realiza una conexion trae un listado de datos desde la BD
+        //luego lo muestra en el Lista de datos -> listBox
         private void ActualizarLista()
         {
             CTRL_Clientes datosBD = new CTRL_Clientes();
@@ -38,7 +34,7 @@ namespace PruebaSQL
                 listDatos.Items.Add(listaDeCliente);
             }
         }
-
+        //limpia los datos del formulario
         private void limpiarListado()
         {
             txtNombre.Text = "";
@@ -48,29 +44,32 @@ namespace PruebaSQL
         }
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            Close();
+            Close();//cierra el programa
         }
-
+        //realiza el guardado de los datos
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            MOD_Clientes listaClientes = new MOD_Clientes();
-            listaClientes.Nombre = txtNombre.Text;
+            MOD_Clientes listaClientes = new MOD_Clientes();//crea una clase
+            listaClientes.Nombre = txtNombre.Text;//extrae los datos de los textBox
             listaClientes.Apellido = txtApellido.Text;
             listaClientes.Telefono = txtTelefono.Text;
             listaClientes.Tarjeta = txttarjetaCredito.Text;
-            if (idCliente != 0)
+            if (idCliente != 0)//verifica si es para guardar o para actualizar
             {
+                //si se actualiza entonces tiene Id anterior caso contrario es 0
                 listaClientes.Id = Convert.ToInt32(idCliente);
             }
             CTRL_Clientes datosBD = new CTRL_Clientes();
-            datosBD.GuardarLista(listaClientes);
-            ActualizarLista();
-            limpiarListado();
-            idCliente = 0;
+            datosBD.GuardarLista(listaClientes);//envia las clase lista
+            ActualizarLista();//actualiza la vista de datos
+            limpiarListado();//limpia el formulario
+            idCliente = 0;//coloca nuevamente idcliente a 0 para insertar nuevo registro.
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            //extrae los datos del dataList y los lleva a los campos del los textBox y otros
+            //para si ser modificados para luego ser guardados con el boton guardar
             MOD_Clientes listaClientes = new MOD_Clientes();
             listaClientes = (MOD_Clientes)listDatos.SelectedItem;
             idCliente = listaClientes.Id;
@@ -82,6 +81,8 @@ namespace PruebaSQL
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            //extrae el Id del registro actual seleccionado del dataList para luego
+            //enviarlo para eliminar el registro
             MOD_Clientes listaClientes = new MOD_Clientes();
             listaClientes = (MOD_Clientes)listDatos.SelectedItem;
             CTRL_Clientes datosBD = new CTRL_Clientes();
